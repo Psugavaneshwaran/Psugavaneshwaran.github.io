@@ -24,8 +24,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t your-dockerhub-username/portfolio:${{ github.sha }} .
-          docker push your-dockerhub-username/portfolio:${{ github.sha }}
+          docker build -t sugavanesh18/portfolio:${{ github.sha }} .
+          docker push sugavanesh18/portfolio:${{ github.sha }}
 
       - name: Set up Kubeconfig
         uses: azure/setup-kubectl@v3
@@ -34,4 +34,4 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl set image deployment/portfolio-deployment portfolio-container=your-dockerhub-username/portfolio:${{ github.sha }}
+          kubectl set image deployment/portfolio-deployment portfolio-container=sugavanesh18/portfolio:${{ github.sha }}
