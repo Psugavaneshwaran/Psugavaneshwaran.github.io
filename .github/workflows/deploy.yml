@@ -27,11 +27,12 @@ jobs:
           docker build -t sugavanesh18/portfolio:${{ github.sha }} .
           docker push sugavanesh18/portfolio:${{ github.sha }}
 
-      - name: Set up Kubeconfig
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'latest'
+      - name: Set up kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl set image deployment/portfolio-deployment portfolio-container=sugavanesh18/portfolio:${{ github.sha }}
+          kubectl set image deployment/portfolio-deployment \
+          portfolio-container=sugavanesh18/portfolio:${{ github.sha }}
