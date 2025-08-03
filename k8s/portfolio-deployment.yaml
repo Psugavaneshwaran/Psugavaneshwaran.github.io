@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ekart-frontend
+  name: portfolio
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: ekart-frontend
+      app: portfolio
   template:
     metadata:
       labels:
-        app: ekart-frontend
+        app: portfolio
     spec:
       containers:
-      - name: frontend
-        image: yourdockerhub/ekart-frontend:latest
+      - name: portfolio
+        image: sugavanesh12/portfolio:latest
         ports:
         - containerPort: 80
         imagePullPolicy: Always
