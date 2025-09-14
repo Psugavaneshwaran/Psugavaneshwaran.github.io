@@ -38,40 +38,41 @@ export const ContactSection = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY).then(
-      (result) => {
-        toast({
-          title: "Message sent!",
-          description: "Thank you for your message. I'll get back to you soon.",
-        });
-        setIsSubmitting(false);
-        e.target.reset();
-      },
-      (error) => {
-        toast({
-          title: "Error sending message",
-          description: "Something went wrong. Please try again later.",
-          variant: "destructive",
-        });
-        console.error(error.text);
-        setIsSubmitting(false);
-      }
-    );
+    emailjs
+      .sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY)
+      .then(
+        () => {
+          toast({ title: "Message sent successfully!" });
+          setIsSubmitting(false);
+          formRef.current.reset();
+        },
+        (error) => {
+          toast({ title: "Failed to send message", description: error.text });
+          setIsSubmitting(false);
+        }
+      );
   };
 
   return (
     <section
       ref={sectionRef}
       id="contact"
-      className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
-      style={{
-        background: `
-          radial-gradient(circle at 20% 30%, rgba(56, 189, 248, 0.15) 0%, transparent 30%),
-          radial-gradient(circle at 80% 70%, rgba(124, 58, 237, 0.15) 0%, transparent 30%),
-          linear-gradient(135deg, rgba(30, 58, 138, 0.95) 0%, rgba(49, 46, 129, 0.9) 100%)
-        `,
-      }}
+      className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-800 to-gray-900"
     >
+      {/* Terminal header bar */}
+      <div className="w-full max-w-6xl mx-auto mb-8">
+        <div className="flex items-center bg-gray-900/80 rounded-t-xl px-6 py-3 border border-gray-700/40 shadow-lg">
+          <span className="flex gap-2 mr-4">
+            <span className="w-3 h-3 rounded-full bg-red-500 border border-red-300 shadow-sm" />
+            <span className="w-3 h-3 rounded-full bg-yellow-400 border border-yellow-200 shadow-sm" />
+            <span className="w-3 h-3 rounded-full bg-green-500 border border-green-300 shadow-sm" />
+          </span>
+          <span className="text-xs sm:text-sm font-mono text-gray-400">
+            Contact — sugavanesh@portfolio:~$
+          </span>
+        </div>
+      </div>
+
       {/* Floating particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(15)].map((_, i) => (
@@ -101,7 +102,8 @@ export const ContactSection = () => {
             Let's Connect
           </h2>
           <p className="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto">
-            Have a project in mind or want to collaborate? I'd love to hear from you.
+            Have a project in mind or want to collaborate? I'd love to hear from
+            you.
           </p>
         </div>
 
@@ -111,22 +113,22 @@ export const ContactSection = () => {
           }`}
         >
           {/* Contact Information */}
-          <div className="bg-gradient-to-br from-blue-900/50 to-indigo-900/50 backdrop-blur-lg p-8 rounded-2xl border border-blue-400/20 shadow-xl hover:shadow-blue-400/20 transition-all duration-500 hover:-translate-y-1">
-            <h3 className="text-2xl font-semibold mb-8 text-cyan-300 flex items-center">
-              <span className="w-8 h-0.5 bg-cyan-400 mr-4"></span>
-              Contact Info
-            </h3>
+            <div className="bg-gradient-to-br from-purple-900/60 via-pink-900/50 to-teal-900/60 backdrop-blur-xl p-8 rounded-2xl border border-purple-400/30 shadow-2xl hover:shadow-pink-400/20 transition-all duration-500 hover:-translate-y-1">
+              <h3 className="text-2xl font-semibold mb-8 text-teal-300 flex items-center">
+                <span className="w-8 h-0.5 bg-pink-400 mr-4"></span>
+                Contact Info
+              </h3>
 
             <div className="space-y-6">
               <div className="flex items-start gap-4 group">
-                <div className="p-3 rounded-lg bg-blue-800/30 group-hover:bg-cyan-400/10 transition-all duration-300 group-hover:scale-110">
-                  <Mail className="h-6 w-6 text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300" />
+                  <div className="p-3 rounded-lg bg-purple-800/30 group-hover:bg-pink-400/10 transition-all duration-300 group-hover:scale-110">
+                    <Mail className="h-6 w-6 text-gray-300 group-hover:text-pink-300 transition-colors duration-300" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-blue-200">Email</h4>
+                  <h4 className="text-sm font-medium text-purple-200">Email</h4>
                   <a
                     href="mailto:sugavanesh08@gmail.com"
-                    className="text-lg text-blue-100 hover:text-cyan-300 transition-colors duration-300"
+                    className="text-lg text-teal-100 hover:text-pink-300 transition-colors duration-300"
                   >
                     sugavanesh08@gmail.com
                   </a>
@@ -134,35 +136,43 @@ export const ContactSection = () => {
               </div>
 
               <div className="flex items-start gap-4 group">
-                <div className="p-3 rounded-lg bg-blue-800/30 group-hover:bg-cyan-400/10 transition-all duration-300 group-hover:scale-110">
-                  <MapPin className="h-6 w-6 text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300" />
+                  <div className="p-3 rounded-lg bg-purple-800/30 group-hover:bg-pink-400/10 transition-all duration-300 group-hover:scale-110">
+                    <MapPin className="h-6 w-6 text-gray-300 group-hover:text-teal-300 transition-colors duration-300" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-blue-200">Location</h4>
-                  <p className="text-lg text-blue-100 hover:text-cyan-300 transition-colors duration-300">
+                  <h4 className="text-sm font-medium text-pink-200">Location</h4>
+                  <p className="text-lg text-teal-100 hover:text-pink-300 transition-colors duration-300">
                     Perundurai, Erode
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-12 pt-8 border-t border-blue-400/10">
-              <h4 className="text-sm font-medium text-blue-200 mb-6">Follow Me</h4>
+            <div className="mt-12 pt-8 border-t border-pink-400/10">
+              <h4 className="text-sm font-medium text-purple-200 mb-6">
+                Follow Me
+              </h4>
               <div className="flex justify-center gap-6">
                 {[
                   {
                     icon: Linkedin,
                     href: "https://www.linkedin.com/in/sugavaneshwaranp18/",
-                    color: "text-blue-400",
                   },
-                  
+                  {
+                    icon: Instagram,
+                    href: "https://www.instagram.com/sugavaneshwaran_p/",
+                  },
+                  {
+                    icon: Twitter,
+                    href: "https://twitter.com/sugavanesh08",
+                  },
                 ].map((social, i) => (
                   <a
                     key={i}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`p-3 rounded-full bg-blue-900/30 hover:bg-blue-800/50 ${social.color} hover:scale-110 transition-all duration-300`}
+                    className={`p-3 rounded-full bg-purple-900/30 hover:bg-pink-800/50 text-gray-300 hover:scale-110 transition-all duration-300`}
                   >
                     <social.icon className="h-6 w-6" />
                   </a>
@@ -172,11 +182,11 @@ export const ContactSection = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-gradient-to-br from-blue-900/50 to-indigo-900/50 backdrop-blur-lg p-8 rounded-2xl border border-blue-400/20 shadow-xl hover:shadow-blue-400/20 transition-all duration-500 hover:-translate-y-1">
-            <h3 className="text-2xl font-semibold mb-8 text-cyan-300 flex items-center">
-              <span className="w-8 h-0.5 bg-cyan-400 mr-4"></span>
-              Send a Message
-            </h3>
+            <div className="bg-gradient-to-br from-teal-900/60 via-purple-900/50 to-pink-900/60 backdrop-blur-xl p-8 rounded-2xl border border-teal-400/30 shadow-2xl hover:shadow-purple-400/20 transition-all duration-500 hover:-translate-y-1">
+              <h3 className="text-2xl font-semibold mb-8 text-pink-300 flex items-center">
+                <span className="w-8 h-0.5 bg-teal-400 mr-4"></span>
+                Send a Message
+              </h3>
 
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-1">
@@ -191,7 +201,7 @@ export const ContactSection = () => {
                   id="name"
                   name="name"
                   required
-                  className="w-full px-4 py-3 rounded-lg bg-blue-900/30 border border-blue-400/20 text-blue-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400/30 transition-all duration-300"
+                    className="w-full px-4 py-3 rounded-lg bg-purple-900/30 border border-pink-400/20 text-teal-100 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-teal-400/30 transition-all duration-300 animate-input-blink"
                   placeholder="John Doe"
                 />
               </div>
@@ -208,7 +218,7 @@ export const ContactSection = () => {
                   id="email"
                   name="email"
                   required
-                  className="w-full px-4 py-3 rounded-lg bg-blue-900/30 border border-blue-400/20 text-blue-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400/30 transition-all duration-300"
+                    className="w-full px-4 py-3 rounded-lg bg-purple-900/30 border border-teal-400/20 text-pink-100 focus:outline-none focus:ring-2 focus:ring-teal-400/50 focus:border-pink-400/30 transition-all duration-300 animate-input-blink"
                   placeholder="john@example.com"
                 />
               </div>
@@ -225,7 +235,7 @@ export const ContactSection = () => {
                   name="message"
                   required
                   rows={5}
-                  className="w-full px-4 py-3 rounded-lg bg-blue-900/30 border border-blue-400/20 text-blue-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400/30 transition-all duration-300"
+                    className="w-full px-4 py-3 rounded-lg bg-teal-900/30 border border-purple-400/20 text-pink-100 focus:outline-none focus:ring-2 focus:ring-purple-400/50 focus:border-teal-400/30 transition-all duration-300 animate-input-blink"
                   placeholder="Hello, I'd like to discuss..."
                 ></textarea>
               </div>
@@ -233,17 +243,17 @@ export const ContactSection = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={cn(
-                  "w-full py-4 px-6 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium flex items-center justify-center gap-2",
-                  "hover:from-cyan-400 hover:to-blue-400 hover:shadow-lg hover:shadow-cyan-400/30 transition-all duration-300",
-                  "focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-blue-900/50",
-                  "disabled:opacity-70 disabled:cursor-not-allowed"
-                )}
+                  className={cn(
+                    "w-full py-4 px-6 rounded-xl bg-gradient-to-r from-purple-900 via-pink-900 to-teal-900 text-teal-300 font-mono flex items-center justify-center gap-2 border border-pink-400/30",
+                    "hover:from-purple-800 hover:to-pink-800 hover:shadow-lg hover:shadow-teal-400/30 transition-all duration-300",
+                    "focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 focus:ring-offset-teal-900/50",
+                    "disabled:opacity-70 disabled:cursor-not-allowed"
+                  )}
               >
                 {isSubmitting ? (
                   <>
                     <svg
-                      className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
+                      className="animate-spin -ml-1 mr-2 h-5 w-5 text-cyan-300"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -262,12 +272,12 @@ export const ContactSection = () => {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
-                    Sending...
+                    $ Sending...
                   </>
                 ) : (
                   <>
-                    Send Message
-                    <Send className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                    $ Send Message
+                    <Send className="h-5 w-5 text-cyan-300 group-hover:translate-x-1 transition-transform duration-300" />
                   </>
                 )}
               </button>
@@ -279,17 +289,31 @@ export const ContactSection = () => {
       <style jsx global>{`
         @keyframes float {
           0% {
-            transform: translateY(0) translateX(0);
+            transform: translate(0px, 0px);
             opacity: 0.2;
           }
           50% {
-            transform: translateY(-20px) translateX(10px);
+            transform: translate(10px, -20px);
             opacity: 0.5;
           }
           100% {
-            transform: translateY(0) translateX(0);
+            transform: translate(0px, 0px);
             opacity: 0.2;
           }
+        }
+        @keyframes input-blink {
+          0%,
+          100% {
+            border-bottom-color: #00fff0;
+          }
+          50% {
+            border-bottom-color: transparent;
+          }
+        }
+        .animate-input-blink:focus {
+          border-bottom-width: 2px !important;
+          border-bottom-style: solid !important;
+          animation: input-blink 1s steps(1) infinite;
         }
       `}</style>
     </section>

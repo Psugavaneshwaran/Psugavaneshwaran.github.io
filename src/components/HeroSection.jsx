@@ -1,152 +1,150 @@
 import { motion } from "framer-motion";
+import React from "react";
 import { ChevronDown, Code2, Download, Rocket } from "lucide-react";
 
 export const HeroSection = () => {
-  // Animation variants for section elements
-  const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        staggerChildren: 0.2,
-        ease: "easeOut",
-      },
-    },
+  // CRT scanline effect
+  // Cyberpunk/Quantum scanline effect
+  const scanlineStyle = {
+    background: "repeating-linear-gradient(180deg, rgba(0,255,255,0.04) 0px, rgba(128,0,255,0.08) 2px, transparent 4px, transparent 8px)",
+    pointerEvents: "none",
+    position: "absolute",
+    inset: 0,
+    zIndex: 1,
+    borderRadius: "1rem"
   };
 
-  const childVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: [0.6, -0.05, 0.01, 0.9], // Spring-like easing
-      },
-    },
-  };
+  // Quantum grid effect
+  const quantumGrid = (
+    <div className="absolute inset-0 z-0 pointer-events-none" style={{ borderRadius: '1rem', overflow: 'hidden' }}>
+      <svg width="100%" height="100%" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+        <g opacity="0.15">
+          {[...Array(20)].map((_, i) => (
+            <circle key={i} cx={20 + i * 18} cy={100 + Math.sin(i) * 40} r="8" fill={i % 2 === 0 ? "#8F00FF" : "#00FFF0"} />
+          ))}
+        </g>
+      </svg>
+    </div>
+  );
 
-  const buttonVariants = {
-    rest: { scale: 1, boxShadow: "0 0 0 rgba(34, 211, 238, 0)" },
-    hover: {
-      scale: 1.05,
-      boxShadow: "0 8px 16px rgba(34, 211, 238, 0.4)",
-      transition: {
-        duration: 0.4,
-        ease: "easeOut",
-      },
-    },
-    tap: { scale: 0.98 },
-  };
+  // Boot sequence lines
+  const bootLines = [
+    "[ OK ] Initializing PortfolioOS...",
+    "[ OK ] Loading quantum modules...",
+    "[ OK ] Checking system integrity...",
+    "[ OK ] Importing skills: Java, SpringBoot, React, Node.js, MongoDB...",
+    "[ OK ] Importing design tools: Figma, Photoshop, Spline...",
+    "[ OK ] Activating cloud services...",
+    "[ OK ] System online.",
+    "",
+    "Sugavaneshwaran@PortfolioOS:~$"
+  ];
 
-  const iconVariants = {
-    rest: { rotate: 0, scale: 1 },
-    hover: {
-      rotate: 15,
-      scale: 1.15,
-      transition: { duration: 0.3, ease: "easeOut" },
-    },
-  };
+  // Flicker animation
+  const flickerClass = "animate-flicker";
 
-  const scrollVariants = {
-    animate: {
-      y: [0, -10, 0],
-      transition: {
-        duration: 1.5,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
-    },
-  };
+  // Blinking cursor (cyberpunk purple)
+  const cursor = <span className="animate-blink text-purple-400">█</span>;
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-indigo-900 to-blue-900 backdrop-blur-md"
+      className="relative py-16 sm:py-24 px-4 sm:px-6 lg:px-8 flex items-center justify-center min-h-[60vh] bg-black"
+      style={{ perspective: "1200px" }}
     >
-      <motion.div
-        className="container max-w-4xl mx-auto text-center z-10"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+      {/* Quantum grid background */}
+      {quantumGrid}
+      {/* 3D CRT Terminal */}
+      <div
+        className="relative z-10 mx-auto w-full max-w-2xl shadow-2xl"
+        style={{
+          borderRadius: "1rem",
+          boxShadow: "0 0 32px #8F00FF, 0 0 0 4px #222 inset",
+          transform: "rotateY(-8deg) rotateX(4deg) scale(1.04)",
+          background: "linear-gradient(135deg, #1a0033 60%, #222 100%)",
+          border: "2px solid #8F00FF",
+          overflow: "hidden"
+        }}
       >
-        <motion.div className="space-y-6 sm:space-y-8 lg:space-y-10" variants={childVariants}>
-          <motion.h1
-            className="text-2xl sm:text-2xl md:text-6xl lg:text-7xl font-extrabold tracking-tight flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4"
-            variants={childVariants}
-          >
-            <motion.span variants={childVariants}>Hi, I'm</motion.span>
-            <motion.span
-              className="text-cyan-400"
-              variants={childVariants}
-            >
+        {/* CRT scanlines overlay */}
+        <div style={scanlineStyle} />
+        {/* Terminal content */}
+        <div className="relative p-6 sm:p-8 font-mono text-cyan-300 text-lg sm:text-xl tracking-wide" style={{ minHeight: "340px" }}>
+          {/* Name at top with gradient color */}
+          <div className="w-full flex justify-center mb-2">
+            <span className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg animate-gradient-x">
               Sugavaneshwaran
-            </motion.span>
-            <motion.div
-              className="flex gap-2 sm:gap-3"
-              variants={childVariants}
-            >
-              <motion.div variants={iconVariants} whileHover="hover">
-                <Code2 className="h-6 w-6 sm:h-8 sm:w-8 text-sky-400" />
-              </motion.div>
-              <motion.div variants={iconVariants} whileHover="hover">
-                <Rocket className="h-6 w-6 sm:h-8 sm:w-8 text-blue-400" />
-              </motion.div>
-            </motion.div>
-          </motion.h1>
-
-          <motion.p
-            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 max-w-2xl mx-auto"
-            variants={childVariants}
-          >
-            Crafting intelligent solutions through full-stack development, machine
-            learning, and modern frameworks. Driven by adaptability and a passion
-            for creating impactful digital experiences.
-          </motion.p>
-
-          <motion.div
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sm:pt-6 lg:pt-8 justify-center"
-            variants={childVariants}
-          >
-            <motion.a
-              href="#projects"
-              className="relative flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base lg:text-lg font-semibold text-white bg-gradient-to-r from-cyan-400 to-sky-400 rounded-full shadow-md"
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-            >
-              View My Work
-              <motion.span
-                className="absolute inset-0 bg-cyan-400/30 opacity-0 rounded-full"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
-              />
-            </motion.a>
-            
-          </motion.div>
-        </motion.div>
-      </motion.div>
-
-      <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-        variants={scrollVariants}
-        animate="animate"
-      >
-        <motion.span
-          className="text-sm sm:text-base text-gray-300 mb-2"
-          variants={childVariants}
-        >
-          Scroll
-        </motion.span>
-        <motion.div variants={iconVariants} whileHover="hover">
-          <ChevronDown className="h-5 w-5 sm:h-6 sm:w-6 text-cyan-400" />
-        </motion.div>
-      </motion.div>
+            </span>
+          </div>
+          {/* Flicker effect */}
+          <div className={flickerClass}>
+            {/* Boot sequence animation */}
+            <BootSequence lines={bootLines} cursor={cursor} />
+            {/* Description after boot */}
+            <div className="mt-6 text-purple-200 text-base sm:text-lg max-w-xl mx-auto opacity-90">
+              Crafting intelligent solutions through full-stack development, machine learning, and modern frameworks.<br />
+              Driven by adaptability and a passion for creating impactful digital experiences.
+            </div>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <a
+                href="#projects"
+                className="relative flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base lg:text-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full shadow-md hover:bg-purple-400 transition"
+                style={{ boxShadow: "0 0 16px #8F00FF" }}
+              >
+                View My Work
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center z-20">
+        <span className="text-sm sm:text-base text-cyan-300 mb-2">Scroll</span>
+        <ChevronDown className="h-5 w-5 sm:h-6 sm:w-6 text-purple-400 animate-bounce" />
+      </div>
+      {/* Flicker, blink, and gradient keyframes */}
+      <style>{`
+        @keyframes flicker {
+          0%, 100% { opacity: 1; }
+          45% { opacity: 0.92; }
+          48% { opacity: 0.98; }
+          50% { opacity: 0.85; }
+          52% { opacity: 0.98; }
+          55% { opacity: 0.92; }
+        }
+        .animate-flicker { animation: flicker 1.8s infinite linear alternate; }
+        @keyframes blink {
+          0%, 49% { opacity: 1; }
+          50%, 100% { opacity: 0; }
+        }
+        .animate-blink { animation: blink 1s steps(1) infinite; }
+        @keyframes gradient-x {
+          0%,100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .animate-gradient-x {
+          background-size: 200% 200%;
+          animation: gradient-x 3s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   );
-};
+
+}
+
+// Boot sequence animation component
+function BootSequence({ lines, cursor }) {
+  const [step, setStep] = React.useState(0);
+  React.useEffect(() => {
+    if (step < lines.length) {
+      const t = setTimeout(() => setStep(step + 1), step < lines.length - 2 ? 350 : 700);
+      return () => clearTimeout(t);
+    }
+  }, [step, lines.length]);
+  return (
+    <pre className="whitespace-pre-line text-green-400 text-lg sm:text-xl font-mono select-none">
+      {lines.slice(0, step).join("\n")}
+      {step === lines.length && cursor}
+    </pre>
+  );
+}

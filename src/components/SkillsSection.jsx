@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import React from "react";
 
 const skills = [
   // Frontend
@@ -10,7 +11,6 @@ const skills = [
   { name: "Java", category: "backend" },
   { name: "Spring Boot", category: "backend" },
   { name: "REST APIs", category: "backend" },
-  { name: "Machine Learning (ML integration)", category: "backend" },
   { name: "Node.js", category: "backend" },
   { name: "Express.js", category: "backend" },
 
@@ -35,204 +35,111 @@ const skills = [
 const categories = ["all", "frontend", "backend", "database", "tools"];
 
 export const SkillsSection = () => {
-  const [activeCategory, setActiveCategory] = useState("all");
+  // Interactive terminal state
+  const [command, setCommand] = useState('ls skills/');
+  const [output, setOutput] = useState([]);
+  const [error, setError] = useState('');
 
-  const filteredSkills = skills.filter(
-    (skill) => activeCategory === "all" || skill.category === activeCategory
-  );
+  useEffect(() => {
+    let match = command.match(/^ls skills\/?(\w+)?$/);
+    if (match) {
+      setError('');
+      let category = match[1];
+      let filtered = category && category !== 'all'
+        ? skills.filter(s => s.category === category).map(s => s.name)
+        : skills.map(s => s.name);
+      // Format output in columns
+      const columns = 4;
+      const rows = Math.ceil(filtered.length / columns);
+      const skillGrid = Array.from({ length: rows }, (_, r) =>
+        Array.from({ length: columns }, (_, c) => filtered[r + c * rows]).filter(Boolean)
+      );
+      setOutput(skillGrid.flat());
+    } else {
+      setError('Command not found. Try: ls skills/, ls skills/frontend, ls skills/backend, ls skills/database, ls skills/tools');
+      setOutput([]);
+    }
+  }, [command]);
 
   return (
     <section
       id="skills"
-      className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden perspective-1000"
-      style={{
-        backgroundImage: "linear-gradient(135deg, rgba(49, 46, 129, 0.95), rgba(30, 58, 138, 0.85), rgba(56, 189, 248, 0.7))",
-        animation: "gradientShift 12s ease-in-out infinite",
-        backgroundSize: "200% 200%",
-      }}
+      className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-800 to-gray-900 relative"
     >
-      <style>
-        {`
-          .perspective-1000 {
-            perspective: 1000px;
-          }
-
-          @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-
-          .skills-bg-layer {
-            position: absolute;
-            inset: 0;
-            background-image: 
-              linear-gradient(45deg, rgba(6, 182, 212, 0.6), rgba(30, 58, 138, 0.75), rgba(49, 46, 129, 0.9)),
-              linear-gradient(225deg, rgba(14, 165, 233, 0.5), rgba(30, 64, 175, 0.7), rgba(49, 46, 129, 0.8)),
-              radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.4), transparent 70%);
-            background-size: 300% 300%, 250% 250%, 200% 200%;
-            animation: gradientShift2 18s ease-in-out infinite reverse, gradientShift3 15s ease-in-out infinite, radialPulse 10s ease-in-out infinite;
-            z-index: 0;
-            opacity: 0.8;
-            transform: translateZ(-100px);
-          }
-
-          @keyframes gradientShift2 {
-            0% { background-position: 100% 50%; }
-            50% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-          }
-
-          @keyframes gradientShift3 {
-            0% { background-position: 50% 0%; }
-            50% { background-position: 50% 100%; }
-            100% { background-position: 50% 0%; }
-          }
-
-          @keyframes radialPulse {
-            0%, 100% { background-size: 200% 200%; opacity: 0.8; }
-            50% { background-size: 250% 250%; opacity: 0.5; }
-          }
-
-          .particle-overlay {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 1;
-          }
-
-          .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(34, 211, 238, 0.7);
-            box-shadow: 0 0 12px rgba(34, 211, 238, 0.6), 0 0 20px rgba(56, 189, 248, 0.4);
-            animation: particleOrbit 12s linear infinite, particleGlow 2s ease-in-out infinite alternate, particleSparkle 3s ease-in-out infinite;
-            transform-style: preserve-3d;
-          }
-
-          .particle:nth-child(1) { top: 5%; left: 10%; width: 3px; height: 3px; animation-delay: 0s, 0s, 0s; animation-duration: 14s, 1.5s, 2.5s; }
-          .particle:nth-child(2) { top: 20%; left: 25%; width: 4px; height: 4px; animation-delay: -1s, -0.5s, -0.8s; animation-duration: 16s, 2s, 3s; background: rgba(56, 189, 248, 0.7); }
-          .particle:nth-child(3) { top: 35%; left: 40%; width: 2px; height: 2px; animation-delay: -2s, -1s, -1.2s; animation-duration: 18s, 1.8s, 2.8s; }
-          .particle:nth-child(4) { top: 50%; left: 55%; width: 5px; height: 5px; animation-delay: -3s, -1.5s, -1.6s; animation-duration: 13s, 2.2s, 3.2s; background: rgba(59, 130, 246, 0.7); }
-          .particle:nth-child(5) { top: 65%; left: 70%; width: 3px; height: 3px; animation-delay: -4s, -2s, -2s; animation-duration: 15s, 1.6s, 2.7s; }
-          .particle:nth-child(6) { top: 80%; left: 15%; width: 4px; height: 4px; animation-delay: -5s, -2.5s, -2.4s; animation-duration: 17s, 2.5s, 3.1s; background: rgba(56, 189, 248, 0.7); }
-          .particle:nth-child(7) { top: 10%; left: 85%; width: 2px; height: 2px; animation-delay: -6s, -3s, -2.8s; animation-duration: 19s, 1.7s, 2.9s; }
-          .particle:nth-child(8) { top: 25%; left: 30%; width: 3px; height: 3px; animation-delay: -7s, -3.5s, -3.2s; animation-duration: 14s, 2.3s, 3.3s; background: rgba(34, 211, 238, 0.7); }
-          .particle:nth-child(9) { top: 40%; left: 45%; width: 4px; height: 4px; animation-delay: -8s, -4s, -3.6s; animation-duration: 16s, 1.9s, 2.6s; background: rgba(59, 130, 246, 0.7); }
-          .particle:nth-child(10) { top: 55%; left: 60%; width: 2px; height: 2px; animation-delay: -9s, -4.5s, -4s; animation-duration: 18s, 2.1s, 3s; }
-          .particle:nth-child(11) { top: 70%; left: 75%; width: 3px; height: 3px; animation-delay: -10s, -5s, -4.4s; animation-duration: 15s, 1.8s, 2.8s; background: rgba(56, 189, 248, 0.7); }
-          .particle:nth-child(12) { top: 85%; left: 20%; width: 4px; height: 4px; animation-delay: -11s, -5.5s, -4.8s; animation-duration: 17s, 2.4s, 3.4s; background: rgba(34, 211, 238, 0.7); }
-
-          @keyframes particleOrbit {
-            0% { transform: rotateY(0deg) translateX(40px) rotateZ(0deg) translateY(20px); opacity: 0.7; }
-            50% { transform: rotateY(180deg) translateX(-40px) rotateZ(180deg) translateY(-20px); opacity: 0.4; }
-            100% { transform: rotateY(360deg) translateX(40px) rotateZ(360deg) translateY(20px); opacity: 0.7; }
-          }
-
-          @keyframes particleGlow {
-            0% { box-shadow: 0 0 12px rgba(34, 211, 238, 0.6), 0 0 20px rgba(56, 189, 248, 0.4); }
-            100% { box-shadow: 0 0 20px rgba(34, 211, 238, 0.8), 0 0 30px rgba(56, 189, 248, 0.6); }
-          }
-
-          @keyframes particleSparkle {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.5); opacity: 1; }
-          }
-
-          @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(30px) rotateX(15deg); filter: blur(4px); }
-            100% { opacity: 1; transform: translateY(0) rotateX(0deg); filter: blur(0); }
-          }
-
-          @keyframes cardHoverGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(34, 211, 238, 0.5), inset 0 0 10px rgba(56, 189, 248, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(34, 211, 238, 0.7), inset 0 0 15px rgba(56, 189, 248, 0.5); }
-          }
-
-          @keyframes buttonGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(34, 211, 238, 0.6), 0 0 30px rgba(56, 189, 248, 0.4); }
-            50% { box-shadow: 0 0 30px rgba(34, 211, 238, 0.8), 0 0 40px rgba(56, 189, 248, 0.6); }
-          }
-
-          .card-hover {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-style: preserve-3d;
-          }
-
-          .card-hover:hover {
-            transform: translateY(-10px) scale(1.05) rotateX(8deg) rotateY(5deg);
-            box-shadow: 0 20px 40px rgba(34, 211, 238, 0.4);
-          }
-
-          .category-button {
-            transition: all 0.3s ease-in-out;
-          }
-
-          .category-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
-          }
-        `}
-      </style>
-      <div className="skills-bg-layer" />
-      <div className="particle-overlay">
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
-        <div className="particle" />
+      {/* Animated particles */}
+      <style>{`
+        @keyframes particleMove {
+          0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.3; }
+          50% { transform: translateY(-30px) translateX(20px) scale(1.2); opacity: 0.6; }
+          100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.3; }
+        }
+      `}</style>
+      <div className="absolute inset-0 pointer-events-none z-0">
+        {[...Array(18)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-cyan-400/20"
+            style={{
+              width: `${16 + Math.random() * 24}px`,
+              height: `${16 + Math.random() * 24}px`,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animation: `particleMove ${6 + Math.random() * 6}s linear infinite`,
+              animationDelay: `${Math.random() * 4}s`,
+              opacity: 0.18,
+              filter: "blur(2px)",
+              zIndex: 0,
+            }}
+          />
+        ))}
       </div>
-      <div className="container mx-auto max-w-5xl relative z-10">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-12 text-center opacity-0 animate-[fadeInUp_1s_ease-in-out_0.2s_forwards]">
-          My <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-sky-400">Skills</span>
-        </h2>
-
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12 opacity-0 animate-[fadeInUp_1s_ease-in-out_0.4s_forwards]">
-          {categories.map((category, key) => (
-            <button
-              key={key}
-              onClick={() => setActiveCategory(category)}
-              aria-pressed={activeCategory === category}
-              className={cn(
-                "px-4 py-2 sm:px-6 sm:py-3 rounded-full transition-all duration-300 capitalize font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-400 category-button",
-                activeCategory === category
-                  ? "bg-gradient-to-r from-cyan-400 to-sky-400 text-white shadow-lg animate-[buttonGlow_4s_ease-in-out_infinite]"
-                  : "bg-indigo-900/80 text-gray-300 hover:bg-indigo-800/80 hover:shadow-[0_0_15px_rgba(34,211,238,0.5)]"
-              )}
-            >
-              {category}
-            </button>
-          ))}
+      <div className="max-w-3xl mx-auto relative z-10">
+        <div className="mb-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-cyan-400 mb-2">Skills</h2>
+          <p className="text-gray-300">Type a command below to list skills by category.</p>
+          <div className="mt-4 inline-block bg-gray-800/80 text-cyan-300 px-4 py-2 rounded-lg shadow border border-cyan-400/20 text-sm">
+            <span className="font-semibold text-green-400">Examples:</span> <br />
+            <span className="text-green-400">$</span> ls skills/<span className="text-cyan-400">frontend</span> &nbsp;
+            <span className="text-green-400">$</span> ls skills/<span className="text-cyan-400">backend</span> &nbsp;
+            <span className="text-green-400">$</span> ls skills/<span className="text-cyan-400">database</span> &nbsp;
+            <span className="text-green-400">$</span> ls skills/<span className="text-cyan-400">tools</span> &nbsp;
+            <span className="text-green-400">$</span> ls skills/<span className="text-cyan-400">all</span>
+          </div>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 opacity-0 animate-[fadeInUp_1s_ease-in-out_0.6s_forwards]">
-          {filteredSkills.length === 0 ? (
-            <p className="text-center text-gray-300 col-span-full text-lg">
-              No skills found in this category.
-            </p>
-          ) : (
-            filteredSkills.map((skill) => (
-              <div
-                key={skill.name}
-                className="relative p-6 rounded-xl bg-gradient-to-br from-indigo-900/80 to-blue-900/80 backdrop-blur-md border border-cyan-400/30 card-hover animate-[cardHoverGlow_4s_ease-in-out_infinite]"
-              >
-                <div className="text-center">
-                  <h3 className="font-semibold text-lg sm:text-xl text-cyan-400">
-                    {skill.name}
-                  </h3>
-                </div>
+        <div className="bg-gray-950 rounded-xl shadow-2xl border border-gray-800 p-0 font-mono text-base sm:text-lg text-green-400 relative overflow-hidden" style={{boxShadow: "0 8px 32px 0 rgba(0,0,0,0.45), 0 1.5px 8px 0 rgba(0,255,255,0.08)"}}>
+          {/* Terminal header bar */}
+          <div className="flex items-center gap-2 px-4 py-2 bg-gray-900 rounded-t-xl border-b border-gray-800">
+            <span className="w-3 h-3 rounded-full bg-red-400/80 inline-block"></span>
+            <span className="w-3 h-3 rounded-full bg-yellow-400/80 inline-block"></span>
+            <span className="w-3 h-3 rounded-full bg-green-400/80 inline-block"></span>
+            <span className="ml-4 text-xs text-gray-400">my@skills:~</span>
+          </div>
+          <div className="px-6 pb-6 pt-4">
+            <div className="mb-2 text-cyan-300 flex items-center">
+              <span className="text-green-400">$</span>
+              <input
+                type="text"
+                value={command}
+                onChange={e => setCommand(e.target.value)}
+                className="bg-transparent outline-none border-none text-cyan-300 ml-2 w-full"
+                spellCheck={false}
+                autoFocus
+              />
+            </div>
+            {error ? (
+              <div className="text-red-400 mt-2">{error}</div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-2">
+                {output.map((skill, i) => (
+                  <span key={skill} className="block px-2 py-1 rounded hover:bg-cyan-400/10 transition-colors duration-200">
+                    {skill}
+                  </span>
+                ))}
               </div>
-            ))
-          )}
+            )}
+          </div>
         </div>
       </div>
     </section>
   );
-};
+}
