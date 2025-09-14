@@ -96,7 +96,7 @@ export const SkillsSection = () => {
       <div className="max-w-3xl mx-auto relative z-10">
         <div className="mb-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-cyan-400 mb-2">Skills</h2>
-          <p className="text-gray-300">Type a command below to list skills by category.</p>
+          <p className="text-gray-300">Type a command below terminal to list skills by category.</p>
           <div className="mt-4 inline-block bg-gray-800/80 text-cyan-300 px-4 py-2 rounded-lg shadow border border-cyan-400/20 text-sm">
             <span className="font-semibold text-green-400">Examples:</span> <br />
             <span className="text-green-400">$</span> ls skills/<span className="text-cyan-400">frontend</span> &nbsp;
